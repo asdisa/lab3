@@ -28,15 +28,22 @@
       <a href="https://github.com/gamestdio/colyseus-examples"><img src="https://rawgit.com/gamestdio/colyseus/master/media/header.png" height="100" alt="colyseus" /></a>
     </h1>
 
-    <p>This example shows how to use custom data structures in your room's state.</p>
+    <button onclick="placeRed()">Red</button>
+    <button onclick="placeBlue()">Blue</button>
+    <br/>
+    <button onclick="placeGreen()">Green</button>
+    <button onclick="placeYellow()">Yellow</button>
+    <br/>
+    <button onclick="donePlacing()">Done</button>
 
-    <strong>commands</strong><br>
-
-    <button onclick="up()">up</button>
-    <button onclick="down()">down</button>
-    <br />
-    <button onclick="left()">left</button>
-    <button onclick="right()">right</button>
+    <br/><br/>
+    <button onclick="guessRed()">Red</button>
+    <button onclick="guessBlue()">Blue</button>
+    <br/>
+    <button onclick="guessGreen()">Green</button>
+    <button onclick="guessYellow()">Yellow</button>
+    <br/>
+    <button onclick="doneGuessing()">Done</button>
 
     <script>
       var host = window.document.location.host.replace(/:.*/, '');
@@ -45,7 +52,7 @@
       var room = client.join("state_handler");
 
       var players = {};
-      var colors = ['red', 'green', 'yellow', 'blue', 'cyan', 'magenta'];
+      var colors = ['red', 'green', 'yellow', 'blue'];
 
       // listen to patches coming from the server
       room.listen("players/:id", function(change) {
@@ -68,7 +75,7 @@
 
       room.listen("players/:id/:axis", function(change) {
         var dom = players[ change.path.id ];
-
+        console.log(1);
         var styleAttribute = (change.path.axis === "x")
           ? "left"
           : "top";
@@ -76,38 +83,51 @@
         dom.style[ styleAttribute ] = change.value + "px";
       });
 
-      window.addEventListener("keydown", function (e) {
-        console.log(e.which);
-        if (e.which === 38) {
-          up();
-
-        } else if (e.which === 39) {
-          right();
-
-        } else if (e.which === 40) {
-          down();
-
-        } else if (e.which === 37) {
-          left();
-        }
+      room.listen("players/:id/:placedBallColors", change => {
+        console.log(change);
       });
 
-      function up () {
-        room.send({ y: -1 });
+      function placeRed () {
+        room.send({ placed: "red" });
       }
 
-      function right () {
-        room.send({ x: 1 });
+      function placeGreen () {
+        room.send({ placed: "green" });
       }
 
-      function down () {
-        room.send({ y: 1 })
+      function placeBlue () {
+        room.send({ placed: "blue" })
       }
 
-      function left () {
-        room.send({ x: -1 })
+      function placeYellow () {
+        room.send({ placed: "yellow" })
       }
 
+      function donePlacing () {
+        room.send({ donePlacing: true })
+      }
+      
+      function guessRed () {
+        room.send({ guessed: "red" });
+      }
+
+      function guessGreen () {
+        room.send({ guessed: "green" });
+      }
+
+      function guessBlue () {
+        room.send({ guessed: "blue" })
+      }
+
+      function guessYellow () {
+        room.send({ guessed: "yellow" })
+      }
+
+      function doneGuessing () {
+        room.send({ doneGuessing: true })
+      }
+
+      console.log(players);
     </script>
   </body>
 </html>
