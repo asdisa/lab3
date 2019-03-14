@@ -29,11 +29,7 @@ export class State {
     }
 
     updatePlayer (id: string, update: any) {
-        if (update.x) {
-            this.players[ id ].x += update.x * 10;
-        } else if (update.y) {
-            this.players[ id ].y += update.y * 10;
-        } else if (update.guessed) {
+        if (update.guessed) {
             if (this.players[ id ].role === 1 && this.phase === 1) {
                 this.players[ id ].guessedBallColors.push(update.guessed);
                 this.guessedBallColors.push(update.guessed);
@@ -41,8 +37,9 @@ export class State {
         } else if (update.placed) {
             if (this.players[ id ].role === 1 && this.phase === 1) {
                 this.players[ id ].placedBallColors.push(update.placed);
-                this.placedBallColors.push(update.guessed);
+                this.placedBallColors.push(update.placed);
             }
+            console.log(this.placedBallColors);
         } else if (update.donePlacing) {
             this.phase = 2;
             for (let key in this.players) {
@@ -65,8 +62,6 @@ export class State {
 }
 
 export class Player {
-    x = Math.floor(Math.random() * 400);
-    y = Math.floor(Math.random() * 400);
     placedBallColors = [];
     guessedBallColors = [];
     role: number = 1;
@@ -77,7 +72,6 @@ export class StateHandlerRoom extends Room<State> {
     maxClients = 2;
     onInit (options) {
         console.log("StateHandlerRoom created!", options);
-
         this.setState(new State());
     }
 
