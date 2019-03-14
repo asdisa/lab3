@@ -6,8 +6,8 @@ export class State {
     phase = 1;
     placedBallColors = [];
     guessedBallColors = [];
+    guesserWon: boolean = null;
     
-
     @nosync
     something = "This attribute won't be sent to the client-side";
 
@@ -34,12 +34,14 @@ export class State {
                 this.players[ id ].guessedBallColors.push(update.guessed);
                 this.guessedBallColors.push(update.guessed);
             }
+        
         } else if (update.placed) {
             if (this.players[ id ].role === 1 && this.phase === 1) {
                 this.players[ id ].placedBallColors.push(update.placed);
                 this.placedBallColors.push(update.placed);
             }
             console.log(this.placedBallColors);
+        
         } else if (update.donePlacing) {
             this.phase = 2;
             for (let key in this.players) {
@@ -48,15 +50,29 @@ export class State {
 
         } else if (update.doneGuessing) {
             this.phase = 1;
-            const otherPlayer = this.getOtherPlayer(id);
-
-            this.players[ id ].winner = this.players[ id ].guessedBallColors === otherPlayer.placedBallColors;
+            
+            this.guesserWon = this.guessedBallColors === this.placedBallColors;
 
             for (let key in this.players) {
                 this.players[key].role = this.players[key].role === 2 ? 1 : 2;
                 this.players[key].placedBallColors = [];
                 this.players[key].guessedBallColors = [];
             }
+
+        } else if (update.popPlaced) {
+            if (this.players[ id ].role === 1 && this.phase === 1) {
+                this.players[ id ].placedBallColors.pop();
+                this.placedBallColors.pop();
+            }
+            console.log(this.placedBallColors);
+        
+        } else if (update.popGuessed) {
+            if (this.players[ id ].role === 2 && this.phase === 2) {
+                this.players[ id ].guessedBallColors.pop();
+                this.guessedBallColors.pop();
+            }
+            console.log(this.guessedBallColors);
+        
         }
     }
 }

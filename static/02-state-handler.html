@@ -3,67 +3,55 @@
   <head>
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
-    <style>
-      body { font-family: Tahoma, Geneva, sans-serif; text-align: center; }
-    </style>
-
-    <!-- colyseus.js client (npm run bundle-colyseus-client) -->
+    <link rel="stylesheet" href="styles.css">"
     <script type="text/javascript" src="colyseus.js"></script>
-
-    <style type="text/css">
-      .ball {
-        width: 100px;
-        height: 100px;
-        background: red;
-        -moz-border-radius: 50px;
-        -webkit-border-radius: 50px;
-        border-radius: 50px;
-        margin-top: 10px;
-        margin-left: 5px;
-        position: center;
-      }
-
-      .placed-balls {
-        width: 525px;
-        height: 120px;
-        border-radius: 20px;
-        background: #b2b8c1;
-      }
-    </style>
-
   </head>
   <body>
+    
     <div class="container">
-      <div class="row justify-content-md-center">
-        <div class="col-md-auto">
-          <div class="btn-toolbar place-btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-            <div class="btn-group place-btn-group mr-2" role="group" aria-label="First group">
-              <button type="button" class="btn btn-secondary btn-danger" onclick="placeRed()">Red</button>
-              <button type="button" class="btn btn-primary" onclick="placeBlue()">Blue</button>
-              <button type="button" class="btn btn-secondary btn-success" onclick="placeGreen()">Green</button>
-              <button type="button" class="btn btn-secondary btn-warning" onclick="placeYellow()">Yellow</button>
+      <div class="jumbotron">
+        <div class="row justify-content-md-center">
+          <div class="col-md-auto">
+            <div class="btn-toolbar place-btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+              <div class="btn-group place-btn-group mr-2" role="group" aria-label="First group">
+                <button type="button" class="btn btn-secondary btn-danger" onclick="placeRed()">Red</button>
+                <button type="button" class="btn btn-primary" onclick="placeBlue()">Blue</button>
+                <button type="button" class="btn btn-secondary btn-success" onclick="placeGreen()">Green</button>
+                <button type="button" class="btn btn-secondary btn-warning" onclick="placeYellow()">Yellow</button>
+              </div>
+              <button type="button" class="btn btn-secondary pop-btn" onclick="popPlaced()">Pop</button>
+              <button type="button" class="btn btn-secondary" onclick="donePlacing()">Done</button>
             </div>
-            <button type="button" class="btn btn-secondary" onclick="donePlacing()">Done</button>
           </div>
         </div>
-      </div>
-      <div class="row justify-content-md-center">      
-        <div class="placed-balls">
-          <div class="ball"></div>
-        </div>  
+        <div class="row justify-content-md-center">      
+          <div class="stack placed-stack">
+        </div>   
       </div>  
-    </div>  
-
-    <div class="btn-toolbar guess-btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-      <div class="btn-group guess-btn-group mr-2" role="group" aria-label="First group">
-        <button type="button" class="btn btn-secondary btn-danger" onclick="guessRed()">Red</button>
-        <button type="button" class="btn btn-primary" onclick="guessBlue()">Blue</button>
-        <button type="button" class="btn btn-secondary btn-success" onclick="guessGreen()">Green</button>
-        <button type="button" class="btn btn-secondary btn-warning" onclick="guessYellow()">Yellow</button>
-      </div>
-      <button type="button" class="btn btn-secondary" onclick="donePlacing()">Done</button>
     </div>
+    
+    <div class="container">
+      <div class="jumbotron">
+        <div class="row justify-content-md-center">
+          <div class="col-md-auto">
+            <div class="btn-toolbar guess-btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+              <div class="btn-group guess-btn-group mr-2" role="group" aria-label="First group">
+                <button type="button" class="btn btn-secondary btn-danger" onclick="guessRed()">Red</button>
+                <button type="button" class="btn btn-primary" onclick="guessBlue()">Blue</button>
+                <button type="button" class="btn btn-secondary btn-success" onclick="guessGreen()">Green</button>
+                <button type="button" class="btn btn-secondary btn-warning" onclick="guessYellow()">Yellow</button>
+              </div>
+              <button type="button" class="btn btn-secondary pop-btn" onclick="popGuessed()">Pop</button>
+              <button type="button" class="btn btn-secondary" onclick="doneGuessing()">Done</button>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-md-center">      
+          <div class="stack guessed-stack"> 
+        </div>   
+      </div>  
+    </div>
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

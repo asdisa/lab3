@@ -1,0 +1,35 @@
+.ball {
+    width: 100px;
+    height: 100px;
+    background: red;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    margin-top: 10px;
+    margin-left: 5px;
+    position: center;
+    float:left;
+  }
+
+  .stack {
+    width: 525px;
+    height: 120px;
+    border-radius: 20px;
+    background: #b2b8c1;
+  }
+
+  .btn-toolbar {
+    padding-bottom: 10px;
+  }
+
+  .pop-btn {
+    margin-right: 2px;
+  }
+
+  .btn-danger {
+    background: red;
+  }
+
+  .btn-warning {
+    background: yellow;
+  }
