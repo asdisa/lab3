@@ -4,6 +4,9 @@ import { listenerCount } from "cluster";
 export class State {
     players: EntityMap<Player> = {};
     phase = 1;
+    placedBallColors = [];
+    guessedBallColors = [];
+    
 
     @nosync
     something = "This attribute won't be sent to the client-side";
@@ -31,10 +34,15 @@ export class State {
         } else if (update.y) {
             this.players[ id ].y += update.y * 10;
         } else if (update.guessed) {
-            this.players[ id ].guessedBallColors.push(update.guessed)
+            if (this.players[ id ].role === 1 && this.phase === 1) {
+                this.players[ id ].guessedBallColors.push(update.guessed);
+                this.guessedBallColors.push(update.guessed);
+            }
         } else if (update.placed) {
-            this.players[ id ].placedBallColors.push(update.placed)
-            console.log(this.players[ id ].placedBallColors);
+            if (this.players[ id ].role === 1 && this.phase === 1) {
+                this.players[ id ].placedBallColors.push(update.placed);
+                this.placedBallColors.push(update.guessed);
+            }
         } else if (update.donePlacing) {
             this.phase = 2;
             for (let key in this.players) {

@@ -75,7 +75,6 @@
 
       room.listen("players/:id/:axis", function(change) {
         var dom = players[ change.path.id ];
-        console.log(1);
         var styleAttribute = (change.path.axis === "x")
           ? "left"
           : "top";
@@ -83,7 +82,7 @@
         dom.style[ styleAttribute ] = change.value + "px";
       });
 
-      room.listen("players/:id/:placedBallColors", change => {
+      room.listen("placedBallColors", change => {
         console.log(change);
       });
 
