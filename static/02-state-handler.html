@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width" />
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
     <style>
       body { font-family: Tahoma, Geneva, sans-serif; text-align: center; }
     </style>
@@ -11,111 +12,62 @@
     <script type="text/javascript" src="colyseus.js"></script>
 
     <style type="text/css">
-      .player {
+      .ball {
         width: 100px;
         height: 100px;
-        position: absolute;
-        padding-top: 24px;
-        box-sizing: border-box;
-        left: 0;
-        top: 0;
+        background: red;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        margin-top: 10px;
+        margin-left: 5px;
+        position: center;
+      }
+
+      .placed-balls {
+        width: 525px;
+        height: 120px;
+        border-radius: 20px;
+        background: #b2b8c1;
       }
     </style>
 
   </head>
   <body>
-    <h1>
-      <a href="https://github.com/gamestdio/colyseus-examples"><img src="https://rawgit.com/gamestdio/colyseus/master/media/header.png" height="100" alt="colyseus" /></a>
-    </h1>
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col-md-auto">
+          <div class="btn-toolbar place-btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group place-btn-group mr-2" role="group" aria-label="First group">
+              <button type="button" class="btn btn-secondary btn-danger" onclick="placeRed()">Red</button>
+              <button type="button" class="btn btn-primary" onclick="placeBlue()">Blue</button>
+              <button type="button" class="btn btn-secondary btn-success" onclick="placeGreen()">Green</button>
+              <button type="button" class="btn btn-secondary btn-warning" onclick="placeYellow()">Yellow</button>
+            </div>
+            <button type="button" class="btn btn-secondary" onclick="donePlacing()">Done</button>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-md-center">      
+        <div class="placed-balls">
+          <div class="ball"></div>
+        </div>  
+      </div>  
+    </div>  
 
-    <button onclick="placeRed()">Red</button>
-    <button onclick="placeBlue()">Blue</button>
-    <br/>
-    <button onclick="placeGreen()">Green</button>
-    <button onclick="placeYellow()">Yellow</button>
-    <br/>
-    <button onclick="donePlacing()">Done</button>
+    <div class="btn-toolbar guess-btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group guess-btn-group mr-2" role="group" aria-label="First group">
+        <button type="button" class="btn btn-secondary btn-danger" onclick="guessRed()">Red</button>
+        <button type="button" class="btn btn-primary" onclick="guessBlue()">Blue</button>
+        <button type="button" class="btn btn-secondary btn-success" onclick="guessGreen()">Green</button>
+        <button type="button" class="btn btn-secondary btn-warning" onclick="guessYellow()">Yellow</button>
+      </div>
+      <button type="button" class="btn btn-secondary" onclick="donePlacing()">Done</button>
+    </div>
 
-    <br/><br/>
-    <button onclick="guessRed()">Red</button>
-    <button onclick="guessBlue()">Blue</button>
-    <br/>
-    <button onclick="guessGreen()">Green</button>
-    <button onclick="guessYellow()">Yellow</button>
-    <br/>
-    <button onclick="doneGuessing()">Done</button>
-
-    <script>
-      var host = window.document.location.host.replace(/:.*/, '');
-
-      var client = new Colyseus.Client(location.protocol.replace("http", "ws") + host + (location.port ? ':' + location.port : ''));
-      var room = client.join("state_handler");
-
-      var players = {};
-      var colors = ['red', 'green', 'yellow', 'blue'];
-
-      // listen to patches coming from the server
-      room.listen("players/:id", function(change) {
-        console.log("players changed:", change);
-        if (change.operation === "add") {
-          players[change.path.id] = 1;
-        } else if (change.operation === "remove") {
-          delete players[change.path.id];
-        }
-      });
-
-      room.listen("placedBallColors/:", change => {
-        console.log(change);
-      });
-
-      room.listen("guessedBallColors/:", change => {
-        console.log(change);
-      });
-
-      room.listen("phase", change => {
-        console.log(change);
-      });
-
-      function placeRed () {
-        room.send({ placed: "red" });
-      }
-
-      function placeGreen () {
-        room.send({ placed: "green" });
-      }
-
-      function placeBlue () {
-        room.send({ placed: "blue" })
-      }
-
-      function placeYellow () {
-        room.send({ placed: "yellow" })
-      }
-
-      function donePlacing () {
-        room.send({ donePlacing: true })
-      }
-      
-      function guessRed () {
-        room.send({ guessed: "red" });
-      }
-
-      function guessGreen () {
-        room.send({ guessed: "green" });
-      }
-
-      function guessBlue () {
-        room.send({ guessed: "blue" })
-      }
-
-      function guessYellow () {
-        room.send({ guessed: "yellow" })
-      }
-
-      function doneGuessing () {
-        room.send({ doneGuessing: true })
-      }
-
-    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="gameScreen.js"></script>
   </body>
 </html>
