@@ -31,7 +31,8 @@ export class State {
 
     updatePlayer (id: string, update: any) {
         if (update.takePlayer) {
-            this.players[ update.playerId ].taken = true;
+            this.players[ id ].taken = true;
+            console.log("takePlayer triggered:", this.players[ id ])
         } else if (update.placed) {
             if (this.players[ id ].role === 1 && this.phase.id === 1) {
                 this.players[ id ].placedBallColors.push(update.placed);
