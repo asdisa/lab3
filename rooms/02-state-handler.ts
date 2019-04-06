@@ -4,7 +4,8 @@ import { listenerCount } from "cluster";
 
 export class State {
     players: EntityMap<Player> = {};
-    phase: EntityMap<number> = {id: 1};
+	phase: EntityMap<number> = {id: 1};
+	switchRoles: EntityMap<number> = {n: 0};
     placedBallColors = [];
     guessedBallColors = [];
     guesserWon: boolean = null;
@@ -46,11 +47,8 @@ export class State {
             }
         
         } else if (update.donePlacing) {
-            this.phase.id = 2;
-            for (let key in this.players) {
-                this.players[key].winner = null;
-            }
-
+			this.phase.id = 2;
+			
         } else if (update.doneGuessing) {
             this.phase.id = 1;
             
@@ -60,7 +58,11 @@ export class State {
                 this.players[key].role = this.players[key].role === 2 ? 1 : 2;
                 this.players[key].placedBallColors = [];
                 this.players[key].guessedBallColors = [];
-            }
+                this.placedBallColors = [];
+                this.guessedBallColors = [];
+			}
+			
+			this.switchRoles.n += 1;
 
         } else if (update.popPlaced) {
             if (this.players[ id ].role === 1 && this.phase.id === 1) {
@@ -85,7 +87,6 @@ export class Player {
     guessedBallColors = [];
     taken: boolean = false;
     role: number = 1;
-    winner: boolean = null;
 }
 
 export class StateHandlerRoom extends Room<State> {
@@ -102,6 +103,12 @@ export class StateHandlerRoom extends Room<State> {
 
     onLeave (client) {
         this.state.removePlayer(client.sessionId);
+        for (let key in this.state.players) {
+            this.state.players[key] = new Player();
+        }
+		this.state.phase.id = 1;
+		this.state.placedBallColors = [];
+		this.state.guessedBallColors = [];
     }
 
     onMessage (client, data) {
