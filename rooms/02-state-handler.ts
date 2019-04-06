@@ -4,7 +4,7 @@ import { listenerCount } from "cluster";
 
 export class State {
     players: EntityMap<Player> = {};
-    phase = 1;
+    phase: EntityMap<number> = {id: 1};
     placedBallColors = [];
     guessedBallColors = [];
     guesserWon: boolean = null;
@@ -30,27 +30,28 @@ export class State {
     }
 
     updatePlayer (id: string, update: any) {
-        if (update.guessed) {
-            if (this.players[ id ].role === 1 && this.phase === 1) {
+        if (update.takePlayer) {
+            this.players[ update.playerId ].taken = true;
+        } else if (update.placed) {
+            if (this.players[ id ].role === 1 && this.phase.id === 1) {
+                this.players[ id ].placedBallColors.push(update.placed);
+                this.placedBallColors.push(update.placed);
+            }
+            
+        } else if (update.guessed) {
+            if (this.players[ id ].role === 2 && this.phase.id === 2) {
                 this.players[ id ].guessedBallColors.push(update.guessed);
                 this.guessedBallColors.push(update.guessed);
             }
         
-        } else if (update.placed) {
-            if (this.players[ id ].role === 1 && this.phase === 1) {
-                this.players[ id ].placedBallColors.push(update.placed);
-                this.placedBallColors.push(update.placed);
-            }
-            console.log(this.placedBallColors);
-        
         } else if (update.donePlacing) {
-            this.phase = 2;
+            this.phase.id = 2;
             for (let key in this.players) {
                 this.players[key].winner = null;
             }
 
         } else if (update.doneGuessing) {
-            this.phase = 1;
+            this.phase.id = 1;
             
             this.guesserWon = this.guessedBallColors === this.placedBallColors;
 
@@ -61,14 +62,14 @@ export class State {
             }
 
         } else if (update.popPlaced) {
-            if (this.players[ id ].role === 1 && this.phase === 1) {
+            if (this.players[ id ].role === 1 && this.phase.id === 1) {
                 this.players[ id ].placedBallColors.pop();
                 this.placedBallColors.pop();
             }
             console.log(this.placedBallColors);
         
         } else if (update.popGuessed) {
-            if (this.players[ id ].role === 2 && this.phase === 2) {
+            if (this.players[ id ].role === 2 && this.phase.id === 2) {
                 this.players[ id ].guessedBallColors.pop();
                 this.guessedBallColors.pop();
             }
@@ -81,6 +82,7 @@ export class State {
 export class Player {
     placedBallColors = [];
     guessedBallColors = [];
+    taken: boolean = false;
     role: number = 1;
     winner: boolean = null;
 }
@@ -90,6 +92,7 @@ export class StateHandlerRoom extends Room<State> {
     onInit (options) {
         console.log("StateHandlerRoom created!", options);
         this.setState(new State());
+        console.log(this.state);
     }
 
     onJoin (client) {
