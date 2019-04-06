@@ -8,7 +8,7 @@ export class State {
 	switchRoles: EntityMap<number> = {n: 0};
     placedBallColors = [];
     guessedBallColors = [];
-    guesserWon: boolean = null;
+    guesserWon: EntityMap<boolean> = {win: null};
     
     @nosync
     something = "This attribute won't be sent to the client-side";
@@ -37,23 +37,31 @@ export class State {
         } else if (update.placed) {
             if (this.players[ id ].role === 1 && this.phase.id === 1) {
                 this.players[ id ].placedBallColors.push(update.placed);
-                this.placedBallColors.push(update.placed);
+				if (this.placedBallColors.length <= 5) {
+					this.placedBallColors.push(update.placed);
+				}
             }
             
         } else if (update.guessed) {
-            if (this.players[ id ].role === 2 && this.phase.id === 2) {
+            if (this.players[ id ].role === 2 && this.phase.id === 3) {
                 this.players[ id ].guessedBallColors.push(update.guessed);
-                this.guessedBallColors.push(update.guessed);
-            }
+                if (this.guessedBallColors.length <= 5) {
+					this.guessedBallColors.push(update.guessed);
+				}
+			}
         
         } else if (update.donePlacing) {
 			this.phase.id = 2;
+			this.guesserWon.win = null;
+			
+        }  else if (update.doneWatching) {
+			this.phase.id = 3;
 			
         } else if (update.doneGuessing) {
             this.phase.id = 1;
             
-            this.guesserWon = this.guessedBallColors === this.placedBallColors;
-
+            this.guesserWon.win = JSON.stringify(this.guessedBallColors) == JSON.stringify(this.placedBallColors);
+			console.log(this.guessedBallColors, this.placedBallColors);
             for (let key in this.players) {
                 this.players[key].role = this.players[key].role === 2 ? 1 : 2;
                 this.players[key].placedBallColors = [];
@@ -72,7 +80,7 @@ export class State {
             console.log(this.placedBallColors);
         
         } else if (update.popGuessed) {
-            if (this.players[ id ].role === 2 && this.phase.id === 2) {
+            if (this.players[ id ].role === 2 && this.phase.id === 3) {
                 this.players[ id ].guessedBallColors.pop();
                 this.guessedBallColors.pop();
             }

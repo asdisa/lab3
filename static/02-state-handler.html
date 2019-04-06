@@ -7,29 +7,32 @@
     <script type="text/javascript" src="colyseus.js"></script>
   </head>
   <body>
-    
+    <div class="container announcement-container">
+      <p class="announcement-paragraph"></p>
+    </div> 
+
     <div class="container">
       <div class="jumbotron">
         <div class="row justify-content-md-center">
           <div class="col-md-auto">
             <div class="btn-toolbar place-btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
               <div class="btn-group place-btn-group mr-2" role="group" aria-label="First group">
-                <button type="button" class="btn btn-secondary btn-danger" onclick="placeRed()">Red</button>
-                <button type="button" class="btn btn-primary" onclick="placeBlue()">Blue</button>
-                <button type="button" class="btn btn-secondary btn-success" onclick="placeGreen()">Green</button>
-                <button type="button" class="btn btn-secondary btn-warning" onclick="placeYellow()">Yellow</button>
-              </div>
-              <button type="button" class="btn btn-secondary pop-btn pop-placed-btn" onclick="popPlaced()">Pop</button>
-              <button type="button" class="btn btn-secondary done-placing-btn" onclick="donePlacing()">Done</button>
+                  <button type="button" class="btn btn-secondary btn-danger" onclick="placeRed()">Red</button>
+                  <button type="button" class="btn btn-primary" onclick="placeBlue()">Blue</button>
+                  <button type="button" class="btn btn-secondary btn-success" onclick="placeGreen()">Green</button>
+                  <button type="button" class="btn btn-secondary btn-warning" onclick="placeYellow()">Yellow</button>
+                </div>
+                <button type="button" class="btn btn-secondary pop-btn pop-placed-btn" onclick="popPlaced()">Pop</button>
+                <button type="button" class="btn btn-secondary done-placing-btn" onclick="donePlacing()">Done</button>
             </div>
           </div>
         </div>
         <div class="row justify-content-md-center">      
-          <div class="stack placed-stack">
-        </div>   
-      </div>  
+          <div class="stack placed-stack"></div>   
+        </div>  
+      </div>
     </div>
-    
+
     <div class="container">
       <div class="jumbotron">
         <div class="row justify-content-md-center">
@@ -47,11 +50,14 @@
           </div>
         </div>
         <div class="row justify-content-md-center">      
-          <div class="stack guessed-stack"> 
-        </div>   
-      </div>  
+          <div class="stack guessed-stack"></div>   
+        </div>  
+      </div>
     </div>
 
+    <div class="container wins-container">
+      <p class="wins-paragraph">Wins: 0</p>
+    </div> 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
